@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>MediFinder - Find Medicines Near You</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,600;1,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#2b1f1b",
+              fog: "#fff7ed",
+              mint: "#f97316",
+              teal: "#f59e0b",
+              coral: "#fb7185",
+            },
+            boxShadow: {
+              soft: "0 20px 60px -30px rgba(15, 23, 42, 0.45)",
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      :root {
+        --bg-gradient:
+          radial-gradient(
+            800px circle at 5% 10%,
+            rgba(245, 158, 11, 0.2),
+            transparent 40%
+          ),
+          radial-gradient(
+            700px circle at 95% 0%,
+            rgba(251, 113, 133, 0.2),
+            transparent 40%
+          ),
+          linear-gradient(180deg, #fff7ed 0%, #f8fafc 100%);
+      }
+      body {
+        font-family:
+          "Space Grotesk",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: #fff7ed;
+        color: #2b1f1b;
+        min-height: 100vh;
+      }
+      .serif {
+        font-family: "Spectral", serif;
+      }
+      .glass {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+      }
+      .floaty {
+        animation: float 6s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+      .stagger > * {
+        animation: fadeUp 0.7s ease forwards;
+        opacity: 0;
+      }
+      .stagger > *:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .stagger > *:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+      .stagger > *:nth-child(3) {
+        animation-delay: 0.25s;
+      }
+      .stagger > *:nth-child(4) {
+        animation-delay: 0.35s;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .floaty {
+          animation: none;
+        }
+        .stagger > * {
+          animation: none;
+          opacity: 1;
+        }
+      }
+      .section {
+        animation: fadeUp 0.8s ease forwards;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <nav
+      class="sticky top-0 z-50 px-4 sm:px-6 py-4 sm:py-5 bg-white/80 backdrop-blur-md"
+    >
+      <div
+        class="container mx-auto flex items-center justify-between max-w-7xl"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="h-10 w-10 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-bold grid place-items-center shadow-md"
+          >
+            MF
+          </div>
+          <h1 class="text-2xl font-bold tracking-tight">MediFinder</h1>
+        </div>
+
+        <div
+          class="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium"
+        >
+          <a
+            href="home.html"
+            class="opacity-70 hover:opacity-100 hover:text-teal transition"
+            >Home</a
+          >
+          <a
+            href="search.html"
+            class="opacity-70 hover:opacity-100 hover:text-teal transition"
+            >Search Medicines</a
+          >
+          <a
+            href="#"
+            class="opacity-70 hover:opacity-100 hover:text-teal transition"
+            >How it works</a
+          >
+          <a
+            href="#"
+            class="opacity-70 hover:opacity-100 hover:text-teal transition"
+            >Pricing</a
+          >
+          <a
+            href="login.html"
+            class="opacity-70 hover:opacity-100 hover:text-teal transition"
+            >Login</a
+          >
+          <a
+            href="register.html"
+            class="bg-gradient-to-r from-[#f97316] to-[#fb7185] text-white px-6 py-2 rounded-full shadow-lg hover:scale-105 transition font-semibold"
+          >
+            Create account
+          </a>
+        </div>
+
+        <details class="md:hidden">
+          <summary
+            class="list-none cursor-pointer bg-white px-4 py-2 rounded-full text-sm font-semibold shadow-soft"
+          >
+            Menu
+          </summary>
+          <div
+            class="absolute right-4 sm:right-6 mt-3 w-56 rounded-2xl bg-white p-4 shadow-soft text-sm font-medium space-y-1"
+          >
+            <a
+              href="home.html"
+              class="block opacity-70 hover:opacity-100 hover:text-teal transition"
+              >Home</a
+            >
+            <a
+              href="search.html"
+              class="block opacity-70 hover:opacity-100 hover:text-teal transition"
+              >Search Medicines</a
+            >
+            <a
+              href="#"
+              class="block opacity-70 hover:opacity-100 hover:text-teal transition"
+              >How it works</a
+            >
+            <a
+              href="#"
+              class="block opacity-70 hover:opacity-100 hover:text-teal transition"
+              >Pricing</a
+            >
+            <a
+              href="login.html"
+              class="block opacity-70 hover:opacity-100 hover:text-teal transition"
+              >Login</a
+            >
+            <a
+              href="register.html"
+              class="mt-2 block text-center bg-ink text-white px-4 py-2 rounded-full"
+            >
+              Create account
+            </a>
+          </div>
+        </details>
+      </div>
+    </nav>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section
+      class="relative overflow-hidden z-0 section px-4 sm:px-6 py-12 sm:py-16 lg:py-24"
+      style="background: var(--bg-gradient)"
+    >
+      <div
+        class="absolute right-20 top-20 w-72 h-72 bg-teal/30 rounded-full blur-3xl"
+      ></div>
+
+      <div class="container mx-auto max-w-7xl">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div class="stagger">
+            <p
+              class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal bg-white/70 px-4 py-2 rounded-full"
+            >
+              Smart pharmacy search
+            </p>
+            <h2
+              class="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight mt-6"
+            >
+              Find the right
+              <span class="serif italic text-teal">medicine</span> in minutes,
+              not hours.
+            </h2>
+            <p class="text-base sm:text-lg text-slate-600 mt-5 sm:mt-6">
+              Check availability across trusted pharmacies, compare prices, and
+              reserve instantly. MediFinder keeps your search clean, fast, and
+              local.
+            </p>
+
+            <div class="mt-6 flex justify-center lg:justify-start">
+              <a
+                href="search.html"
+                class="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+              >
+                Search Medicines
+              </a>
+            </div>
+
+            <div class="mt-8 glass rounded-2xl p-4 shadow-xl">
+              <div class="flex flex-col md:flex-row gap-3">
+                <input
+                  id="searchInput"
+                  type="text"
+                  placeholder="Search medicine e.g. Crocin"
+                  class="flex-1 bg-white px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal/50"
+                />
+                <input
+                  type="text"
+                  placeholder="City or pincode"
+                  class="md:w-48 bg-white px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal/50"
+                />
+                <button
+                  type="button"
+                  onclick="goToSearch()"
+                  class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:scale-105 transition"
+                >
+                  Search now
+                </button>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
+                <span class="bg-white/80 px-3 py-1 rounded-full">
+                  24x7 availability check
+                </span>
+                <span class="bg-white/80 px-3 py-1 rounded-full">
+                  Verified pharmacies only
+                </span>
+                <span class="bg-white/80 px-3 py-1 rounded-full">
+                  Save up to 18%
+                </span>
+              </div>
+            </div>
+
+            <div
+              class="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6"
+            >
+              <div>
+                <p class="text-2xl font-bold">1.6k+</p>
+                <p class="text-xs uppercase tracking-widest text-slate-500">
+                  Pharmacies
+                </p>
+              </div>
+              <div class="hidden sm:block h-10 w-px bg-slate-300"></div>
+              <div>
+                <p class="text-2xl font-bold">92%</p>
+                <p class="text-xs uppercase tracking-widest text-slate-500">
+                  Match rate
+                </p>
+              </div>
+              <div class="hidden sm:block h-10 w-px bg-slate-300"></div>
+              <div>
+                <p class="text-2xl font-bold">15 min</p>
+                <p class="text-xs uppercase tracking-widest text-slate-500">
+                  Avg pickup
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative mt-8 lg:mt-0">
+            <div
+              class="absolute -top-10 -left-10 h-44 w-44 bg-teal/20 rounded-full blur-3xl -z-10"
+            ></div>
+            <div
+              class="absolute -bottom-10 -right-10 h-52 w-52 bg-coral/20 rounded-full blur-3xl -z-10"
+            ></div>
+
+            <div class="glass rounded-3xl p-6 sm:p-8 shadow-soft">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-slate-500">Current search</p>
+                  <p class="text-xl font-semibold">Dolo 650</p>
+                </div>
+                <span
+                  class="text-xs font-semibold bg-mint/20 text-mint px-3 py-1 rounded-full"
+                  >In stock</span
+                >
+              </div>
+
+              <div class="mt-6 space-y-4">
+                <div class="bg-white rounded-2xl p-4 flex items-center gap-4">
+                  <div
+                    class="h-12 w-12 rounded-2xl bg-ink text-white grid place-items-center"
+                  >
+                    1
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="font-semibold">CityCare Pharmacy</p>
+                    <p class="text-sm text-slate-500">1.2 km away · &#8377;34</p>
+                  </div>
+                  <button
+                    class="text-xs font-semibold text-ink bg-fog px-3 py-2 rounded-full"
+                  >
+                    Reserve
+                  </button>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 flex items-center gap-4">
+                  <div
+                    class="h-12 w-12 rounded-2xl bg-teal text-white grid place-items-center"
+                  >
+                    2
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="font-semibold">GreenCross Medicals</p>
+                    <p class="text-sm text-slate-500">2.8 km away · &#8377;32</p>
+                  </div>
+                  <button
+                    class="text-xs font-semibold text-ink bg-fog px-3 py-2 rounded-full"
+                  >
+                    Reserve
+                  </button>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 flex items-center gap-4">
+                  <div
+                    class="h-12 w-12 rounded-2xl bg-coral text-white grid place-items-center"
+                  >
+                    3
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="font-semibold">Apollo Health Hub</p>
+                    <p class="text-sm text-slate-500">3.1 km away · &#8377;35</p>
+                  </div>
+                  <button
+                    class="text-xs font-semibold text-ink bg-fog px-3 py-2 rounded-full"
+                  >
+                    Reserve
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-6 flex items-center justify-between text-sm">
+                <div class="flex items-center gap-2 text-slate-500">
+                  <span class="h-2 w-2 rounded-full bg-mint"></span>
+                  Live inventory sync
+                </div>
+                <button class="text-xs font-semibold text-teal hover:underline">
+                  View all results
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TRUST / PARTNERS ================= -->
+    <section class="px-4 sm:px-6 pb-12">
+      <div
+        class="container mx-auto max-w-7xl glass rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+      >
+        <div>
+          <p class="text-sm text-slate-500">Trusted by top pharmacies</p>
+          <h3 class="text-2xl font-semibold mt-2">
+            Coverage across 60+ neighborhoods
+          </h3>
+        </div>
+        <div class="flex flex-wrap gap-4 text-sm font-semibold text-slate-500">
+          <span class="bg-white px-4 py-2 rounded-full">Apollo</span>
+          <span class="bg-white px-4 py-2 rounded-full">MedPlus</span>
+          <span class="bg-white px-4 py-2 rounded-full">Wellness</span>
+          <span class="bg-white px-4 py-2 rounded-full">CareMart</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= POPULAR MEDICINES ================= -->
+    <section class="py-12 sm:py-16 px-4 sm:px-6 bg-slate-50">
+      <div class="container mx-auto max-w-7xl">
+        <div
+          class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
+        >
+          <div>
+            <p class="text-sm uppercase tracking-[0.2em] text-slate-500">
+              Most searched
+            </p>
+            <h3 class="text-3xl font-bold">Popular medicines this week</h3>
+          </div>
+          <button
+            class="text-sm font-semibold text-ink bg-white px-4 py-2 rounded-full shadow-soft w-full sm:w-auto"
+          >
+            Browse categories
+          </button>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            class="bg-white p-6 rounded-2xl shadow-soft hover:shadow-xl hover:-translate-y-1 transition cursor-pointer"
+          >
+            <p class="text-xs text-slate-500">Pain relief</p>
+            <p class="text-xl font-semibold mt-2">Crocin</p>
+            <p class="text-sm text-slate-500 mt-4">From &#8377;28 · 120 stores</p>
+          </div>
+
+          <div
+            class="bg-white p-6 rounded-2xl shadow-soft hover:shadow-xl hover:-translate-y-1 transition cursor-pointer"
+          >
+            <p class="text-xs text-slate-500">Fever & cold</p>
+            <p class="text-xl font-semibold mt-2">Dolo 650</p>
+            <p class="text-sm text-slate-500 mt-4">From &#8377;32 · 140 stores</p>
+          </div>
+
+          <div
+            class="bg-white p-6 rounded-2xl shadow-soft hover:shadow-xl hover:-translate-y-1 transition cursor-pointer"
+          >
+            <p class="text-xs text-slate-500">General health</p>
+            <p class="text-xl font-semibold mt-2">Paracetamol</p>
+            <p class="text-sm text-slate-500 mt-4">From &#8377;22 · 98 stores</p>
+          </div>
+
+          <div
+            class="bg-white p-6 rounded-2xl shadow-soft hover:shadow-xl hover:-translate-y-1 transition cursor-pointer"
+          >
+            <p class="text-xs text-slate-500">Antibiotic</p>
+            <p class="text-xl font-semibold mt-2">Azithral</p>
+            <p class="text-sm text-slate-500 mt-4">From &#8377;86 · 65 stores</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+    <section class="py-12 sm:py-16 px-4 sm:px-6">
+      <div class="container mx-auto max-w-7xl">
+        <div class="grid lg:grid-cols-2 gap-10 items-start lg:items-center">
+          <div class="space-y-6">
+            <h3 class="text-3xl font-bold">Why people use MediFinder</h3>
+            <p class="text-slate-600">
+              Keep your search focused with verified pharmacies, clean price
+              comparisons, and one-tap reservations. Everything updates live so
+              you never run into out-of-stock surprises.
+            </p>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div class="bg-white p-5 rounded-2xl shadow-soft">
+                <h4 class="text-lg font-semibold">Real-time availability</h4>
+                <p class="text-sm text-slate-500 mt-2">
+                  Instant stock checks with live pharmacy updates.
+                </p>
+              </div>
+              <div class="bg-white p-5 rounded-2xl shadow-soft">
+                <h4 class="text-lg font-semibold">Transparent pricing</h4>
+                <p class="text-sm text-slate-500 mt-2">
+                  See verified prices before you reserve.
+                </p>
+              </div>
+              <div class="bg-white p-5 rounded-2xl shadow-soft">
+                <h4 class="text-lg font-semibold">Nearby pickup</h4>
+                <p class="text-sm text-slate-500 mt-2">
+                  Choose a store within minutes of you.
+                </p>
+              </div>
+              <div class="bg-white p-5 rounded-2xl shadow-soft">
+                <h4 class="text-lg font-semibold">Smart reminders</h4>
+                <p class="text-sm text-slate-500 mt-2">
+                  Set refill alerts and reorder fast.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-[#2b1f1b] text-white rounded-3xl p-8 sm:p-10 shadow-soft"
+          >
+            <h4 class="text-xl font-semibold">How it works</h4>
+            <div class="mt-6 space-y-6">
+              <div class="flex items-start gap-4">
+                <div
+                  class="h-10 w-10 rounded-full bg-white/20 grid place-items-center"
+                >
+                  1
+                </div>
+                <div>
+                  <p class="font-semibold">Search your medicine</p>
+                  <p class="text-sm text-white/70 mt-1">
+                    Type the name or upload a prescription.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div
+                  class="h-10 w-10 rounded-full bg-white/20 grid place-items-center"
+                >
+                  2
+                </div>
+                <div>
+                  <p class="font-semibold">Compare results</p>
+                  <p class="text-sm text-white/70 mt-1">
+                    Check pricing, distance, and availability.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div
+                  class="h-10 w-10 rounded-full bg-white/20 grid place-items-center"
+                >
+                  3
+                </div>
+                <div>
+                  <p class="font-semibold">Reserve or order</p>
+                  <p class="text-sm text-white/70 mt-1">
+                    Lock in stock and pick up when ready.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <button
+              class="mt-8 bg-white text-[#2b1f1b] px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition w-full sm:w-auto"
+            >
+              Start searching
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CALL TO ACTION ================= -->
+    <section class="px-4 sm:px-6 pb-16 sm:pb-20">
+      <div
+        class="container mx-auto max-w-7xl bg-gradient-to-br from-[#f97316] to-[#fb7185] text-white rounded-3xl p-8 sm:p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-8 shadow-soft"
+      >
+        <div>
+          <h3 class="text-2xl sm:text-3xl font-bold">
+            Start finding medicines today
+          </h3>
+          <p class="text-white/80 mt-3 text-sm sm:text-base">
+            Create a free account to save pharmacies, track orders, and get
+            refill reminders.
+          </p>
+        </div>
+        <a
+          href="register.html"
+          class="bg-white text-[#2b1f1b] px-6 py-3 rounded-full font-semibold w-full sm:w-auto text-center"
+        >
+          Create account
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer
+      class="bg-gradient-to-b from-[#1f0f0c] to-black text-gray-300 py-16"
+    >
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid gap-10 lg:grid-cols-4">
+          <div>
+            <div class="flex items-center gap-3">
+              <div
+                class="h-10 w-10 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-bold grid place-items-center shadow-md"
+              >
+                MF
+              </div>
+              <p class="text-xl font-semibold text-white">MediFinder</p>
+            </div>
+            <p class="mt-4 text-sm text-gray-400">
+              MediFinder helps you locate medicines from nearby pharmacies,
+              compare prices, and find availability instantly.
+            </p>
+            <ul class="mt-5 space-y-2 text-sm text-gray-400">
+              <li class="flex items-center gap-2">
+                <span
+                  class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/20 text-[10px]"
+                  >✔</span
+                >
+                Compare medicine prices
+              </li>
+              <li class="flex items-center gap-2">
+                <span
+                  class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/20 text-[10px]"
+                  >✔</span
+                >
+                Find nearby pharmacies
+              </li>
+              <li class="flex items-center gap-2">
+                <span
+                  class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/20 text-[10px]"
+                  >✔</span
+                >
+                Save time searching medicines
+              </li>
+            </ul>
+
+            <div class="mt-6 flex items-center gap-3">
+              <a
+                href="#"
+                class="rounded-full border border-white/20 p-2 text-gray-300 transition hover:text-white hover:border-white/60"
+                aria-label="Twitter"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.3 3H21l-6.5 7.4L22 21h-6.2l-4.8-6.1L5.6 21H3l7-8L2 3h6.3l4.4 5.6L18.3 3z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="rounded-full border border-white/20 p-2 text-gray-300 transition hover:text-white hover:border-white/60"
+                aria-label="LinkedIn"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M20.45 20.45h-3.55v-5.6c0-1.3-.03-3-1.85-3-1.86 0-2.14 1.44-2.14 2.9v5.7H9.36V9h3.4v1.55h.05c.47-.9 1.6-1.85 3.3-1.85 3.53 0 4.18 2.32 4.18 5.33v6.42zM5.34 7.44a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="rounded-full border border-white/20 p-2 text-gray-300 transition hover:text-white hover:border-white/60"
+                aria-label="Instagram"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.2-.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="rounded-full border border-white/20 p-2 text-gray-300 transition hover:text-white hover:border-white/60"
+                aria-label="Facebook"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M13.5 9H16V6h-2.5C11.6 6 10 7.6 10 9.5V12H8v3h2v6h3v-6h2.3l.7-3H13V9.5c0-.3.2-.5.5-.5z"
+                  />
+                </svg>
+              </a>
+            </div>
+
+            <div class="mt-8">
+              <p
+                class="text-sm font-semibold uppercase tracking-widest text-white/60"
+              >
+                Stay Updated
+              </p>
+              <p class="mt-3 text-sm text-gray-400">
+                Get pharmacy updates and price drops in your inbox.
+              </p>
+              <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  class="w-full rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
+                />
+                <button
+                  class="rounded-full bg-white px-5 py-2 text-sm font-semibold text-[#1f0f0c] transition hover:opacity-90"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p
+              class="text-sm font-semibold uppercase tracking-widest text-white/60"
+            >
+              Quick Links
+            </p>
+            <div class="mt-4 flex flex-col gap-3 text-sm text-gray-400">
+              <a href="#" class="hover:text-white">Home</a>
+              <a href="search.html" class="hover:text-white"
+                >Search Medicines</a
+              >
+              <a href="#" class="hover:text-white">How It Works</a>
+              <a href="#" class="hover:text-white">Pricing</a>
+              <a href="login.html" class="hover:text-white">Login</a>
+              <a href="register.html" class="hover:text-white"
+                >Create Account</a
+              >
+            </div>
+          </div>
+
+          <div>
+            <p
+              class="text-sm font-semibold uppercase tracking-widest text-white/60"
+            >
+              Resources
+            </p>
+            <div class="mt-4 flex flex-col gap-3 text-sm text-gray-400">
+              <a href="#" class="hover:text-white">Find Pharmacies</a>
+              <a href="#" class="hover:text-white">Medicine Price Comparison</a>
+              <a href="#" class="hover:text-white">Health Tips</a>
+              <a href="#" class="hover:text-white">FAQs</a>
+              <a href="#" class="hover:text-white">Support Center</a>
+            </div>
+          </div>
+
+          <div>
+            <p
+              class="text-sm font-semibold uppercase tracking-widest text-white/60"
+            >
+              Contact
+            </p>
+            <div class="mt-4 space-y-3 text-sm text-gray-400">
+              <p>support@medifinder.com</p>
+              <p>+91 98765 43210</p>
+              <p>Indore, India</p>
+              <p class="pt-2 text-white/60">Mon–Sat: 9:00 AM – 9:00 PM</p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="mt-12 border-t border-white/10 pt-6 text-sm text-gray-400 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <span>© 2026 MediFinder. All rights reserved.</span>
+          <div class="flex flex-wrap gap-4">
+            <a href="#" class="hover:text-white">Privacy Policy</a>
+            <a href="#" class="hover:text-white">Terms of Service</a>
+            <a href="#" class="hover:text-white">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function goToSearch() {
+        const query = document.getElementById("searchInput").value.trim();
+        const destination = query
+          ? `search.html?q=${encodeURIComponent(query)}`
+          : "search.html";
+        window.location.href = destination;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build & Deploy to Tomcat",
+        "type": "shell",
+        "command": "powershell",
+        "args": [
+          "-ExecutionPolicy", "Bypass",
+          "-File", "${workspaceFolder}\\.vscode\\deploy.ps1"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "shared",
+          "clear": true
+        },
+        "problemMatcher": {
+          "owner": "java",
+          "fileLocation": "absolute",
+          "pattern": {
+            "regexp": "^(.+\\.java):(\\d+):\\s+(error|warning):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "severity": 3,
+            "message": 4
+          }
+        }
+      }
+    ]
+  }
