@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1"
+         metadata-complete="true">
+
+    <servlet>
+        <servlet-name>TestDBServlet</servlet-name>
+        <servlet-class>com.medifinder.servlet.TestDBServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TestDBServlet</servlet-name>
+        <url-pattern>/test-db</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>com.medifinder.servlet.SearchServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+    <servlet-name>SetLocationServlet</servlet-name>
+    <servlet-class>com.medifinder.servlet.SetLocationServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>SetLocationServlet</servlet-name>
+    <url-pattern>/set-location</url-pattern>
+</servlet-mapping>
+
+    <servlet>
+        <servlet-name>MedicineDetailsServlet</servlet-name>
+        <servlet-class>com.medifinder.servlet.MedicineDetailsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>MedicineDetailsServlet</servlet-name>
+        <url-pattern>/MedicineDetailsServlet</url-pattern>
+    </servlet-mapping>
+
+</web-app>
